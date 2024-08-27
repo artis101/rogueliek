@@ -22,6 +22,7 @@ class Room:
         prev_room: "Room | None" = None,
         next_room: "Room | None" = None,
         is_dead_end: bool = False,
+        bulk: bool = False,
     ):
         self.width = width
         self.height = height
@@ -34,7 +35,14 @@ class Room:
         self.entry_position: Tuple[int, int] | None = None
         self.exit_position: Tuple[int, int] | None = None
 
-        self._init()
+        if not bulk:
+            self._init()
+
+    def __str__(self):
+        return f"Room(width={self.width}, height={self.height}, seed={self.seed}"
+
+    def debug(self):
+        return f"Room(width={self.width}, height={self.height}, seed={self.seed}, prev_room={self.prev_room}, next_room={self.next_room}, is_dead_end={self.is_dead_end})"
 
     def _init(self):
         # Generate the room by generating the floors and walls first
