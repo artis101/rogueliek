@@ -1,4 +1,4 @@
-from rogueliek.types import TileType
+from src.rogueliek.types import TileType
 
 
 class Tile:

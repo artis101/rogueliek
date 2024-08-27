@@ -2,24 +2,17 @@ from enum import Enum
 
 
 class TileType(Enum):
-    WALL = 0
-    FLOOR = 1
-    DOOR = 2
-    TREASURE = 3
-    TRAP = 4
-    WATER = 5
-    ENTRY = 6
+    # Environment tiles
+    STONE_WALL = 10
+    STONE_FLOOR = 20
+    WOODEN_DOOR = 30
+    # Special tiles (e.g. entry point) have higher values
+    ENTRY = 1001  # Entry point to the dungeon
+    EXIT = 9999  # Exit from the dungeon. You beat the game!
 
 
-class RoomType(Enum):
-    NORMAL = 0
-    TREASURE = 1
-    TRAP = 2
-    BOSS = 3
-
-
-class EntityType(Enum):
-    PLAYER = 0
-    MONSTER = 1
-    ITEM = 2
-    NPC = 3
+class Side(Enum):
+    TOP = "top"
+    BOTTOM = "bottom"
+    LEFT = "left"
+    RIGHT = "right"
