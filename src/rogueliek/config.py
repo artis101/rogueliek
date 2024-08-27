@@ -1,5 +1,5 @@
 from typing import Dict
-from .types import RoomType, EntityType
+from rogueliek.types import RoomType, EntityType
 
 
 class DungeonConfig:

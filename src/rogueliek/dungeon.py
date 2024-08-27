@@ -1,10 +1,12 @@
 import random
 from typing import List, Tuple
-from .tile import Tile
-from .room import Room
-from .entity import Entity
-from .types import TileType, RoomType, EntityType
-from .config import DungeonConfig
+
+from rogueliek.tile_types import TILE_TYPES
+from rogueliek.tile import Tile
+from rogueliek.room import Room
+from rogueliek.entity import Entity
+from rogueliek.types import TileType, RoomType, EntityType
+from rogueliek.config import DungeonConfig
 
 
 class Dungeon:
@@ -13,15 +15,7 @@ class Dungeon:
         self.tiles: List[List[Tile]] = []
         self.rooms: List[Room] = []
         self.entities: List[Entity] = []
-        self.tile_types = {
-            TileType.WALL: Tile(TileType.WALL, "#", False, "A solid wall"),
-            TileType.FLOOR: Tile(TileType.FLOOR, ".", True, "A stone floor"),
-            TileType.DOOR: Tile(TileType.DOOR, "+", True, "A wooden door"),
-            TileType.TREASURE: Tile(TileType.TREASURE, "$", True, "A glittering floor"),
-            TileType.TRAP: Tile(TileType.TRAP, "^", True, "A suspicious floor"),
-            TileType.WATER: Tile(TileType.WATER, "~", False, "A pool of water"),
-            TileType.ENTRY: Tile(TileType.ENTRY, "<", True, "The dungeon entrance"),
-        }
+        self.tile_types = TILE_TYPES
 
     def generate(self):
         self._initialize_tiles()
@@ -279,61 +273,6 @@ class Dungeon:
 
             # If no valid direction found, return the original entry point
             return dx, dy
-
-    def explore_dungeon(self):
-        current_room = random.choice(self.rooms)
-        visited_rooms = set()
-
-        while len(visited_rooms) < len(self.rooms):
-            if current_room not in visited_rooms:
-                print(f"\nEntering room at ({current_room.x}, {current_room.y}):")
-                entry_x, entry_y = current_room.x, current_room.y
-                if visited_rooms:  # Not the first room
-                    # Find a suitable entry point (door) for the new room
-                    for x in range(current_room.width):
-                        for y in range(current_room.height):
-                            if (
-                                self.tiles[current_room.y + y][current_room.x + x].type
-                                == TileType.DOOR
-                            ):
-                                entry_x, entry_y = (
-                                    current_room.x + x,
-                                    current_room.y + y,
-                                )
-                                break
-                        if entry_x != current_room.x or entry_y != current_room.y:
-                            break
-
-                self.generate_room(current_room, entry_x, entry_y)
-                room_map = [[tile.char for tile in row] for row in current_room.tiles]
-                for entity in current_room.entities:
-                    room_map[entity.y - current_room.y][entity.x - current_room.x] = (
-                        entity.char
-                    )
-                print("\n".join("".join(row) for row in room_map))
-                visited_rooms.add(current_room)
-
-            if current_room.exit_points:
-                next_exit = random.choice(current_room.exit_points)
-                next_room = next(
-                    (
-                        room
-                        for room in self.rooms
-                        if room != current_room
-                        and room.x <= next_exit[0] < room.x + room.width
-                        and room.y <= next_exit[1] < room.y + room.height
-                    ),
-                    None,
-                )
-                if next_room:
-                    print(f"Moving to room at ({next_room.x}, {next_room.y})")
-                    current_room = next_room
-                else:
-                    print("Dead end. Backtracking...")
-                    current_room = random.choice(list(visited_rooms))
-            else:
-                print("No exits. Backtracking...")
-                current_room = random.choice(list(visited_rooms))
 
     def __str__(self):
         dungeon_map = [[tile.char for tile in row] for row in self.tiles]

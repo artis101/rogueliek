@@ -1,8 +1,9 @@
 import random
 from typing import List, Optional, Tuple
-from .types import RoomType
-from .tile import Tile
-from .entity import Entity
+from rogueliek.types import RoomType
+from rogueliek.tile import Tile
+from rogueliek.entity import Entity
+from rogueliek.config import DungeonConfig
 
 
 class Room:
@@ -12,14 +13,16 @@ class Room:
         y: int,
         width: int,
         height: int,
-        type: RoomType,
+        room_type: RoomType,
+        config: DungeonConfig,
         seed: Optional[int] = None,
     ):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.type = type
+        self.type = room_type
+        self.config = config
         self.tiles: List[List[Tile]] = []
         self.entities: List[Entity] = []
         self.entry_point: Optional[Tuple[int, int]] = None

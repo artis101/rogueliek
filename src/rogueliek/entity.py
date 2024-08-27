@@ -1,4 +1,4 @@
-from .types import EntityType
+from rogueliek.types import EntityType
 
 
 class Entity:

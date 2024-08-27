@@ -1,5 +1,5 @@
 import pytest
-from ..dungeon import Dungeon, DungeonConfig, Room, RoomType, EntityType
+from rogueliek.dungeon import Dungeon, DungeonConfig, Room, RoomType, EntityType
 
 
 @pytest.fixture
