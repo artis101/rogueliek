@@ -26,8 +26,9 @@ def astar_between_tiles(
             return path[::-1]
 
         open_set.remove(current)
+
+        # get_tile_neighbors filters out unwalkable tiles
         for neighbor in get_tile_neighbors(current):
-            # Assuming get_tile_neighbors already filters out non-walkable tiles
             movement_cost = euclidean_distance(current, neighbor)
             tentative_g_score = g_score[current] + movement_cost
 
@@ -41,4 +42,3 @@ def astar_between_tiles(
                     open_set.add(neighbor)
 
     return []  # No path found
-

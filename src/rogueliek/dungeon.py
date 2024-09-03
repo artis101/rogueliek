@@ -32,30 +32,14 @@ class Dungeon:
                 room_seed = self.rng.randint(0, 2**32 - 1)
                 is_dead_end = len(self.rooms) == self.max_rooms - 1
 
-                prev_room = self.rooms[-1] if self.rooms else None
                 new_room = Room(
-                    room_width,
-                    room_height,
-                    seed=room_seed,
-                    prev_room=prev_room,
-                    next_room=None,  # Will be set in the next iteration if not the last room
-                    is_dead_end=is_dead_end,
-                    bulk=True,  # defers initialization to the end
+                    room_width, room_height, seed=room_seed, is_dead_end=is_dead_end
                 )
-
-                if prev_room:
-                    prev_room.next_room = new_room
 
                 self.rooms.append(new_room)
                 self._place_room(x, y, room_width, room_height)
 
             attempts += 1
-
-        # Ensure the last room is marked as a dead end
-        if self.rooms:
-            self.rooms[-1].is_dead_end = True
-            self.rooms[-1].next_room = None
-            [r._init() for r in self.rooms]
 
     def _can_place_room(self, x: int, y: int, width: int, height: int) -> bool:
         if x + width > self.width or y + height > self.height:
@@ -78,8 +62,6 @@ class Dungeon:
         return self.rooms[room_index - 1] if room_index > 0 else None
 
     def render(self):
-        for r in self.rooms:
-            print(r.debug())
         for y in range(self.height):
             for x in range(self.width):
                 room_index = self.grid[y][x]
@@ -93,4 +75,3 @@ class Dungeon:
                     )
                     print(room.tiles[local_y][local_x].char, end="")
             print()
-
