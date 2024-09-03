@@ -86,7 +86,7 @@ class Room:
         entry_tile_type = TR[TileType.WOODEN_DOOR]
 
         self.tiles[y][x] = entry_tile_type
-        self.entry_position = self._find_adjacent_spot((y, x))
+        self.entry_position = (y, x)
 
     def _generate_exit_point(self, use_side: Optional[Side] = None):
         self._iterations += 1
@@ -153,7 +153,7 @@ class Room:
             if self.is_tile_walkable((y + dy, x + dx))
         ]
 
-    def render(self, show_path_to_exit: bool = False):
+    def render(self, show_path_to_exit: bool = False, render_player: bool = False):
         if show_path_to_exit and self.is_dead_end:
             raise ValueError("Cannot show path to exit in a dead end room")
 
@@ -165,6 +165,10 @@ class Room:
                 self.exit_position,  # type: ignore
                 self.get_tile_neighbors,
             )
+
+        if render_player and self.entry_position:
+            y, x = self.entry_position
+            self.tiles[y][x] = TR[TileType.PLAYER]
 
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):

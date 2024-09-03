@@ -8,6 +8,7 @@ class TileType(Enum):
     WOODEN_DOOR = 30
     # Special tiles (e.g. entry point) have higher values
     ENTRY = 1001  # Entry point to the dungeon
+    PLAYER = 1337  # Player
     EXIT = 9999  # Exit from the dungeon. You beat the game!
 
 
